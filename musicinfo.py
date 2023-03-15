@@ -1,6 +1,18 @@
 import time
 import asyncio
 import json
+import sys
+import subprocess
+import pkg_resources
+
+required = {'winsdk'}
+installed = {pkg.key for pkg in pkg_resources.working_set}
+missing = required - installed
+if missing:
+    python = sys.executable
+    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+
+    
 from winsdk.windows.media.control import \
     GlobalSystemMediaTransportControlsSessionManager as MediaManager
 from winsdk.windows.storage.streams import \
